@@ -1,0 +1,33 @@
+---
+// «Написати» / «Замовити»: a native <details> chooser of the client's real channels (works without JS).
+// contact-menu.ts adds Esc, click-outside and focus return. No form, nothing is "sent" from the page.
+import Icon from "./Icon.astro";
+import { PHONE_MAIN, tel, viberUrl, telegramUrl, whatsappUrl } from "../data/site";
+interface Props {
+  label: string;
+  variant?: "primary" | "secondary" | "inverse" | "bar";
+  waText?: string;
+  withCall?: boolean;
+  up?: boolean;
+  rec?: string;
+  class?: string;
+}
+const { label, variant = "secondary", waText = "Добрий день! Пишу з сайту Bauart.", withCall = false, up = false, rec, class: cls } = Astro.props;
+---
+<details class:list={["cmenu", `cmenu--${variant}`, { "cmenu--up": up }, cls]} data-rec={rec} data-cmenu>
+  <summary class:list={["btn", `btn--${variant === "bar" ? "dark" : variant}`, "cmenu__trigger"]}>
+    <span>{label}</span>
+    <Icon name="chevron" size={20} class="cmenu__chev" />
+  </summary>
+  <div class="cmenu__panel">
+    <ul class="cmenu__list" role="list">
+      {withCall && (
+        <li><a class="cmenu__item" href={tel(PHONE_MAIN.e164)}><Icon name="phone" /><span>Подзвонити</span></a></li>
+      )}
+      <li><a class="cmenu__item" href={viberUrl}><Icon name="viber" /><span>Viber</span></a></li>
+      <li><a class="cmenu__item" href={telegramUrl} rel="noopener" target="_blank"><Icon name="telegram" /><span>Telegram</span></a></li>
+      <li><a class="cmenu__item" href={whatsappUrl(waText)} rel="noopener" target="_blank"><Icon name="whatsapp" /><span>WhatsApp</span></a></li>
+    </ul>
+    <p class="cmenu__note">Номер у месенджерах: <a href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a></p>
+  </div>
+</details>

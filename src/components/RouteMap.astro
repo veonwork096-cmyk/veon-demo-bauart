@@ -1,0 +1,67 @@
+---
+// Signature: schematic of the client's billboard routes (not a map, no scale). One green square = one billboard
+// face listed on the client's homepage (20 in total). Coordinates are schematic, directions are real.
+type P = [number, number];
+const K: P = [300, 580];          // Київ
+const V: P = [380, 400];          // Вишгород
+const H: P = [460, 260];          // Хотянівка (Р69 км 28–32)
+const R69end: P = [540, 120];
+const NP: P = [240, 300];         // Нові Петрівці (Р-02)
+const R02end: P = [200, 90];
+const SP: P = [160, 320];         // Старі Петрівці
+const L: P = [90, 300];           // Лютіж
+const M1: P = [170, 540];
+const B: P = [80, 520];           // Бородянський р-н (М-07 км 37–39)
+const M07end: P = [20, 515];
+
+const lerp = (a: P, b: P, t: number): P => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+const spread = (a: P, b: P, n: number, from: number, to: number): P[] =>
+  Array.from({ length: n }, (_, i) => lerp(a, b, n === 1 ? (from + to) / 2 : from + ((to - from) * i) / (n - 1)));
+
+const marks: P[] = [
+  ...spread(K, V, 2, 0.84, 0.95),         // Вишгород — 2
+  ...spread(V, H, 7, 0.2, 0.95),          // Р69 — 7
+  ...spread(K, NP, 3, 0.7, 0.92),         // Р-02 — 3
+  ...spread(NP, SP, 2, 0.3, 0.75),        // Князя Святослава — 4
+  ...spread(SP, L, 2, 0.3, 0.75),
+  ...spread(M1, B, 4, 0.15, 0.9),         // М-07 — 4
+];
+const pts = (...p: P[]) => p.map((q) => q.join(",")).join(" ");
+---
+<figure class="routes" data-reveal>
+  <svg class="routes__svg" viewBox="0 0 560 640" role="img" aria-labelledby="routes-title routes-desc">
+    <title id="routes-title">Схема трас з білбордами Bauart</title>
+    <desc id="routes-desc">Від Києва розходяться траси: Р69 через Вишгород до Хотянівки і далі на Чернігів, Р-02 через Нові Петрівці на Іванків, вулиця Князя Святослава від Нових Петрівців через Старі Петрівці до Лютежа, М-07 через Бородянський район на Ковель. Зеленими квадратами позначено 20 площин.</desc>
+    <g class="routes__lines">
+      <polyline class="routes__road" points={pts(K, V, H, R69end)} />
+      <polyline class="routes__road" points={pts(K, NP, R02end)} />
+      <polyline class="routes__street" points={pts(NP, SP, L)} />
+      <polyline class="routes__road" points={pts(K, M1, B, M07end)} />
+      {marks.map(([x, y]) => <rect class="routes__mark" x={x - 7} y={y - 7} width="14" height="14" />)}
+    </g>
+    <g class="routes__labels">
+      <circle class="routes__city" cx={K[0]} cy={K[1]} r="11" />
+      <text class="routes__city-name" x="320" y="612">Київ</text>
+
+      <text class="routes__code" x="452" y="196" text-anchor="end">Р69</text>
+      <text class="routes__place" x="396" y="410">Вишгород</text>
+      <text class="routes__place" x="446" y="262" text-anchor="end">Хотянівка</text>
+      <text class="routes__dir" x="556" y="104" text-anchor="end">на Чернігів</text>
+
+      <text class="routes__code" x="230" y="170">Р-02</text>
+      <text class="routes__place" x="256" y="306">Нові Петрівці</text>
+      <text class="routes__dir" x="200" y="72" text-anchor="middle">на Іванків</text>
+
+      <text class="routes__place" x="160" y="356" text-anchor="middle">Старі Петрівці</text>
+      <text class="routes__place" x="90" y="282" text-anchor="middle">Лютіж</text>
+
+      <text class="routes__code" x="186" y="600" text-anchor="middle">М-07</text>
+      <text class="routes__place" x="30" y="495">Бородянський р-н</text>
+      <text class="routes__dir" x="14" y="552">на Ковель</text>
+    </g>
+  </svg>
+  <figcaption class="routes__caption">
+    <span class="routes__key" aria-hidden="true"></span>
+    Одна площина Bauart. Схема без масштабу.
+  </figcaption>
+</figure>

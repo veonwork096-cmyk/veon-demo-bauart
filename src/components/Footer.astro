@@ -1,0 +1,40 @@
+---
+import { Image } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import ContactMenu from "./ContactMenu.astro";
+import Icon from "./Icon.astro";
+import logo from "../assets/img/bauart-logo.png";
+import { PHONE_MAIN, PHONE_SECOND, EMAIL, ADDRESS, MAP_URL, tel, FUTURE_NOTE } from "../data/site";
+const year = new Date().getFullYear();
+const future = ["Щебінь", "Пісок", "Доставка і оренда самоскидів", "Білборди", "Рекламні конструкції", "Про компанію", "Політика конфіденційності"];
+---
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <a href="#top" class="site-footer__logo" aria-label="Bauart — на початок сторінки">
+        <Image src={logo} alt="Bauart" width={115} height={44} format="png" densities={[1, 1.25]} loading="lazy" />
+      </a>
+      <p class="site-footer__about">Щебінь і пісок з кар’єрів, доставка власними самоскидами, білборди на трасах Київщини.</p>
+    </div>
+    <div class="site-footer__contacts">
+      <p class="site-footer__title">Контакти</p>
+      <ul role="list">
+        <li><a href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a></li>
+        <li><a href={tel(PHONE_SECOND.e164)}>{PHONE_SECOND.full}</a></li>
+        <li><a href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+        <li><a href={MAP_URL} rel="noopener" target="_blank">{ADDRESS.short}</a></li>
+      </ul>
+    </div>
+    <div class="site-footer__pages">
+      <p class="site-footer__title">Розділи</p>
+      <ul role="list">
+        {future.map((f) => <li><FutureLink note={FUTURE_NOTE} class="flink flink--plain">{f}</FutureLink></li>)}
+      </ul>
+    </div>
+    <p class="site-footer__copy">© Bauart, {year}</p>
+  </div>
+</footer>
+<div class="mobile-bar" data-rec="UX-R1">
+  <a class="btn btn--primary mobile-bar__call" href={tel(PHONE_MAIN.e164)}><Icon name="phone" size={20} /><span>Подзвонити</span></a>
+  <ContactMenu label="Написати" variant="bar" up class="mobile-bar__write" />
+</div>

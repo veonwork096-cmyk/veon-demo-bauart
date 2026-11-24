@@ -1,0 +1,274 @@
+---
+import { Picture, Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import Section from "../components/Section.astro";
+import FutureLink from "../components/FutureLink.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import ContactMenu from "../components/ContactMenu.astro";
+import RouteMap from "../components/RouteMap.astro";
+import Icon from "../components/Icon.astro";
+import { PHONE_MAIN, PHONE_SECOND, EMAIL, ADDRESS, MAP_URL, tel, viberUrl, telegramUrl, whatsappUrl, FUTURE_NOTE, BILLBOARD_GROUPS } from "../data/site";
+
+import truckRoad from "../assets/img/samoskyd-trasa.jpg";
+import truckQuarry from "../assets/img/samoskyd-kariier.jpg";
+import shchebin from "../assets/img/shchebin.jpg";
+import pisok from "../assets/img/pisok.jpg";
+import konstruktsiia from "../assets/img/konstruktsiia-bauart.jpg";
+import bbVyshhorod from "../assets/img/bb-vyshhorod.jpg";
+import bbR69 from "../assets/img/bb-r69.jpg";
+import bbR02 from "../assets/img/bb-r02.jpg";
+import bbSviatoslava from "../assets/img/bb-sviatoslava.jpg";
+import bbM07 from "../assets/img/bb-m07.jpg";
+
+const title = "Щебінь і пісок з доставкою по Києву та області — Bauart, Вишгород";
+const description =
+  "Щебінь кварцитний 5–25 і 25–60 мм, пісок з кар’єрів. Власні самоскиди 30 і 40 т, самовивіз у Вишгороді. Білборди на трасах Р69, М-07, Р-02. +380 95 130 30 30";
+
+const fractions = [
+  { name: "Щебінь кварцитний", size: "5–25 мм", price: "520 грн", img: shchebin, wa: "Добрий день! Цікавить щебінь кварцитний 5–25 мм." },
+  { name: "Щебінь кварцитний", size: "25–60 мм", price: "500 грн", img: shchebin, wa: "Добрий день! Цікавить щебінь кварцитний 25–60 мм." },
+];
+
+const billboardPhotos = [
+  { img: bbR69, place: "Р69, км 28+910, ліворуч, зупинка «Сади Дніпра»" },
+  { img: bbVyshhorod, place: "Вишгород, перехрестя вул. Набережна і вул. Шолуденка" },
+  { img: bbR02, place: "Р-02, Нові Петрівці, поворот на Межигір’я" },
+  { img: bbSviatoslava, place: "вул. Князя Святослава, з Лютежа до Старих Петрівців" },
+  { img: bbM07, place: "М-07, км 37+600, праворуч, Бородянський район" },
+];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Bauart",
+  description: "Щебінь і пісок з кар’єрів, доставка власними самоскидами 30 і 40 т, білборди на трасах Київщини.",
+  telephone: [PHONE_MAIN.e164, PHONE_SECOND.e164],
+  email: EMAIL,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "вул. Промислова, 5",
+    addressLocality: "Вишгород",
+    addressRegion: "Київська область",
+    addressCountry: "UA",
+  },
+  areaServed: ["Київ", "Київська область"],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+
+  <!-- 1. Перший екран: оффер, дзвінок, самовивіз; панорама власного самоскида без тексту -->
+  <Section id="top" rec="UX-R2,S-R002,UX-R7,G-R002,G-R006,MA-R003,SEO-R001,SEO-R004,SEO-R006" class="hero">
+    <div class="container">
+      <h1 class="hero__title" data-rec="S-R003">Щебінь і пісок з кар’єрів — привеземо власними самоскидами по Києву та області</h1>
+      <div class="hero__row">
+        <p class="hero__lead">Прямі поставки з кар’єрів без посередників, власні самоскиди на 30 і 40 т, відвантажуємо 300–500 т на день.</p>
+        <div class="hero__act">
+          <div class="hero__buttons">
+            <a class="btn btn--primary btn--call" href={tel(PHONE_MAIN.e164)}>
+              <Icon name="phone" size={22} />
+              <span class="btn__stack"><span>Подзвонити</span><span class="btn__num">{PHONE_MAIN.short}</span></span>
+            </a>
+            <ContactMenu label="Написати" variant="secondary" />
+          </div>
+          <p class="hero__pickup">
+            <Icon name="pin" size={20} />
+            <span>Самовивіз: {ADDRESS.short}. <a href={MAP_URL} rel="noopener" target="_blank">Відкрити на карті</a></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+  <!-- Панорама власного самоскида: низ першого екрана, без тексту поверх -->
+  <div class="hero-strip">
+    <div class="container">
+      <div class="hero__photo drive" data-reveal data-rec="S-R001">
+        <Picture
+          src={truckRoad}
+          formats={["avif", "webp"]}
+          widths={[640, 960, 1320, 1680]}
+          sizes="(min-width: 1440px) 1320px, calc(100vw - 2 * var(--space))"
+          alt="Самоскид із напівпричепом на заміській трасі"
+          loading="eager"
+          class="hero__img"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Щебінь і пісок: табло фракцій -->
+  <Section id="materialy" rec="UX-R3,UX-R4" class="materials">
+    <div class="container materials__grid">
+      <div class="materials__intro">
+        <h2 class="h2">Щебінь кварцитний і пісок з майданчика у Вишгороді</h2>
+        <ul class="proof" role="list">
+          <li>Прямі поставки з кар’єрів, без посередників.</li>
+          <li>Сертифікати якості на щебінь і пісок.</li>
+          <li>Власний майданчик продажу у Вишгороді: можна забрати самому.</li>
+        </ul>
+        <p class="materials__future">
+          <FutureLink note={FUTURE_NOTE} class="flink">Усі фракції щебеню</FutureLink>
+          <FutureLink note={FUTURE_NOTE} class="flink">Пісок</FutureLink>
+        </p>
+      </div>
+      <div class="board-wrap">
+        <ul class="board" role="list" data-rec="S-R005">
+          {fractions.map((f) => (
+            <li class="board__row">
+              <Image src={f.img} alt={`${f.name} ${f.size}`} width={96} height={96} densities={[1, 2]} formats={["avif", "webp"]} class="board__thumb" loading="lazy" />
+              <p class="board__name">{f.name}</p>
+              <p class="board__figures"><span class="board__size">{f.size}</span><span class="board__price">{f.price}</span></p>
+              <ContactMenu label="Замовити" variant="primary" withCall waText={f.wa} class="board__cta" rec="UX-R3" />
+            </li>
+          ))}
+          <li class="board__row">
+            <Image src={pisok} alt="Пісок" width={96} height={96} densities={[1, 2]} formats={["avif", "webp"]} class="board__thumb" loading="lazy" />
+            <p class="board__name">Пісок</p>
+            <p class="board__figures"><span class="board__ask">ціну назвемо телефоном</span></p>
+            <ContactMenu label="Замовити" variant="primary" withCall waText="Добрий день! Цікавить пісок." class="board__cta" />
+          </li>
+        </ul>
+        <p class="board__note">Як рахується ціна і скільки коштує доставка на ваш об’єкт, скажемо телефоном: <a href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a>.</p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 3. Доставка і самоскиди: «асфальт» -->
+  <Section id="dostavka" class="road">
+    <div class="container road__grid">
+      <h2 class="h2 road__title">Доставка і оренда самоскидів 30 і 40 т</h2>
+      <p class="road__figures" aria-label="Самоскиди на 30 і 40 тонн">
+        <span>30&nbsp;т</span><span>40&nbsp;т</span>
+      </p>
+      <div class="road__facts">
+        <ul class="road__list" role="list">
+          <li><strong>Київ і Київська область.</strong> Возимо власним парком самоскидів.</li>
+          <li><strong>300–500 т на день</strong> відвантажуємо з майданчика у Вишгороді.</li>
+          <li><strong>Також возимо</strong> асфальт і зерно.</li>
+        </ul>
+        <p class="road__muted">Вартість рейсу розрахуємо за маршрутом.</p>
+        <div class="road__actions">
+          <ContactMenu label="Замовити самоскид" variant="inverse" withCall waText="Добрий день! Потрібен самоскид." />
+          <FutureLink note={FUTURE_NOTE} class="flink flink--inverse">Детальніше про доставку</FutureLink>
+        </div>
+      </div>
+      <div class="road__photo">
+        <Picture
+          src={truckQuarry}
+          formats={["avif", "webp"]}
+          widths={[480, 770, 1100]}
+          sizes="(min-width: 1024px) 560px, calc(100vw - 2 * var(--space))"
+          alt="Самоскид на ґрунтовому майданчику"
+          loading="lazy"
+          class="road__img"
+        />
+      </div>
+    </div>
+  </Section>
+
+  <!-- 4. Білборди: signature — схема трас -->
+  <Section id="reklama" class="ads">
+    <div class="container">
+      <div class="ads__head">
+        <h2 class="h2">Білборди на трасах Київщини</h2>
+        <p class="lead">20 власних площин на трасах Р69, Р-02, М-07, у Вишгороді та Петрівцях. Ціна площини 1600–2000 грн, умови оренди уточнимо телефоном.</p>
+      </div>
+      <div class="ads__grid">
+        <RouteMap />
+        <div class="ads__side">
+          <ol class="places" role="list">
+            {BILLBOARD_GROUPS.map((g) => (
+              <li class="places__row">
+                <p class="places__code">{g.code}</p>
+                <p class="places__where">{g.road}{g.place && <><br />{g.place}</>}</p>
+                <p class="places__meta"><span>{g.count} {g.count === 1 ? "площина" : g.count < 5 ? "площини" : "площин"}</span><span>{g.price}</span></p>
+              </li>
+            ))}
+          </ol>
+          <div class="ads__actions">
+            <ContactMenu label="Дізнатися вільні площини" variant="primary" withCall waText="Добрий день! Цікавлять вільні білборди." rec="UX-R3" />
+            <FutureLink note={FUTURE_NOTE} class="flink">Усі площини на карті</FutureLink>
+          </div>
+        </div>
+      </div>
+      <ul class="spots" role="list" aria-label="Фото площин Bauart">
+        {billboardPhotos.map((p) => (
+          <li class="spots__item">
+            <figure>
+              <Image src={p.img} alt={`Білборд Bauart: ${p.place}`} width={300} height={300} formats={["avif", "webp"]} loading="lazy" class="spots__img" />
+              <figcaption>{p.place}</figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+
+      <div class="make">
+        <div class="make__photo">
+          <Picture
+            src={konstruktsiia}
+            formats={["avif", "webp"]}
+            widths={[480, 800, 1100, 1500]}
+            sizes="(min-width: 1024px) 760px, calc(100vw - 2 * var(--space))"
+            alt="Білборд з логотипом Bauart"
+            loading="lazy"
+            class="make__img"
+          />
+        </div>
+        <div class="make__text">
+          <h3 class="h3">Виробляємо рекламні конструкції</h3>
+          <ul class="proof" role="list">
+            <li>Білборди усіх типорозмірів.</li>
+            <li>Доставляємо власним транспортом.</li>
+            <li>З технічними паспортами.</li>
+          </ul>
+          <div class="make__actions">
+            <a class="btn btn--secondary" href={tel(PHONE_MAIN.e164)}><Icon name="phone" size={20} /><span>Обговорити конструкцію</span></a>
+            <a class="link-strong" href={`mailto:${EMAIL}`}>Надіслати макет поштою</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- 5. Контакти і самовивіз -->
+  <Section id="kontakty" rec="UX-R1" class="contacts">
+    <div class="container contacts__grid">
+      <div class="contacts__main">
+        <h2 class="h2">Контакти і самовивіз</h2>
+        <ul class="phones" role="list">
+          <li><a class="phones__num" href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a><span class="phones__hint">Viber, Telegram, WhatsApp на цьому номері</span></li>
+          <li><a class="phones__num" href={tel(PHONE_SECOND.e164)}>{PHONE_SECOND.full}</a></li>
+        </ul>
+        <ul class="channels" role="list">
+          <li><a class="channel" href={viberUrl}><Icon name="viber" /><span>Viber</span></a></li>
+          <li><a class="channel" href={telegramUrl} rel="noopener" target="_blank"><Icon name="telegram" /><span>Telegram</span></a></li>
+          <li><a class="channel" href={whatsappUrl("Добрий день! Пишу з сайту Bauart.")} rel="noopener" target="_blank"><Icon name="whatsapp" /><span>WhatsApp</span></a></li>
+          <li><a class="channel" href={`mailto:${EMAIL}`}><Icon name="mail" /><span>{EMAIL}</span></a></li>
+        </ul>
+      </div>
+      <div class="contacts__site">
+        <h3 class="h3">Майданчик у Вишгороді</h3>
+        <p class="contacts__addr">{ADDRESS.full}</p>
+        <a class="btn btn--secondary" href={MAP_URL} rel="noopener" target="_blank"><Icon name="pin" size={20} /><span>Відкрити на карті</span></a>
+        <div class="prep">
+          <p class="prep__title">Що підготувати до дзвінка</p>
+          <ul role="list">
+            <li>матеріал і фракція;</li>
+            <li>обсяг;</li>
+            <li>адреса доставки.</li>
+          </ul>
+          <p class="prep__muted">Час відвантаження уточніть телефоном.</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Footer slot="footer" />
+</Base>
+
+<style is:global>
+  /* «Подзвонити 095 130 30 30» never breaks inside the button */
+  @media (min-width: 360px) { .btn--call, .btn__stack { white-space: nowrap; } }
+</style>

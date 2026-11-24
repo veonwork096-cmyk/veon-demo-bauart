@@ -1,0 +1,45 @@
+---
+import { Image } from "astro:assets";
+import Icon from "./Icon.astro";
+import logo from "../assets/img/bauart-logo.png";
+import { NAV, PHONE_MAIN, PHONE_SECOND, EMAIL, ADDRESS, MAP_URL, tel } from "../data/site";
+---
+<header id="header" class="site-header" data-rec="UX-R5" data-header>
+  <div class="container site-header__row">
+    <a class="site-header__logo" href="#top" aria-label="Bauart — на початок сторінки">
+      <Image src={logo} alt="Bauart" width={115} height={44} loading="eager" format="png" densities={[1, 1.25]} />
+    </a>
+    <nav class="site-nav" aria-label="Розділи сторінки">
+      <ul role="list">
+        {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <a class="site-header__phone" href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a>
+    <a class="btn btn--primary site-header__call" href={tel(PHONE_MAIN.e164)}>Подзвонити</a>
+    <a class="site-header__icon-call" href={tel(PHONE_MAIN.e164)} aria-label={`Подзвонити ${PHONE_MAIN.full}`}><Icon name="phone" /></a>
+    <button class="site-header__burger" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-open>
+      <Icon name="menu" /><span class="visually-hidden">Відкрити меню</span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" data-menu hidden>
+    <div class="mobile-menu__top container">
+      <a class="site-header__logo" href="#top" data-menu-link aria-label="Bauart — на початок сторінки">
+        <Image src={logo} alt="Bauart" width={115} height={44} format="png" densities={[1, 1.25]} />
+      </a>
+      <button class="site-header__burger" type="button" data-menu-close>
+        <Icon name="close" /><span class="visually-hidden">Закрити меню</span>
+      </button>
+    </div>
+    <nav class="container mobile-menu__nav" aria-label="Розділи сторінки (меню)">
+      <ul role="list">
+        {NAV.map((n) => <li><a href={n.href} data-menu-link>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="container mobile-menu__contacts">
+      <a class="mobile-menu__phone" href={tel(PHONE_MAIN.e164)}>{PHONE_MAIN.full}</a>
+      <a class="mobile-menu__phone" href={tel(PHONE_SECOND.e164)}>{PHONE_SECOND.full}</a>
+      <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      <a href={MAP_URL} rel="noopener" target="_blank">{ADDRESS.short}</a>
+    </div>
+  </div>
+</header>
